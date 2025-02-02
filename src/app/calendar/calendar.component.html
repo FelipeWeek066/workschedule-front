@@ -2,13 +2,13 @@
   <div class="row">
 <div class="calendar">
   <div class="month">
-    <button (click)="lowerMonth()" class="nav">
+    <button (click)="date.setMonth(date.getMonth() - 1); this.updateCalendar();" class="nav">
     <
   </button>
     <div class="upperView">
-      <span class="monthDate">{{month}} {{year}}</span>
+      <span class="monthDate">{{monthNames[this.date.getMonth()]}} {{this.date.getFullYear()}}</span>
     </div>
-    <button (click)="upperMonth()" class="nav">
+    <button (click)="date.setMonth(date.getMonth() + 1); this.updateCalendar();" class="nav">
       >
       </button>
   </div>
@@ -22,38 +22,63 @@
     <span>S</span>
   </div>
     <div class="dates" >
-      <button class="DayOn" *ngFor="let day of days; let i = index" [ngStyle]="{'background-color': day.color}" (click)="setFocus(i)">
-      <span>{{day.date.getDate()}}</span>
+      <button  class="worked-{{day.worked}}" *ngFor="let day of days; let i = index" (click)="selected = days[i];  editing = false">
+      <span *ngIf="day.worked != undefined">{{day.date.getDate()}}</span>
+      <div class="hasNote" *ngIf="day.note != ''"></div>
     </button>
     </div>
 </div>
 </div>
 <div class="row">
 
+<div class="rightPanel">
+  <div class="monthData">
+    <h1>sobre {{monthNames[date.getMonth()]}}</h1>
+    <label> total Do Mes: </label>
+    <span>{{amountToReceive}}</span>
+    <br>
+    <label> Dias Trabalhados: </label>
+    <span>{{tempDays.length}}</span>
+  </div>
+  <div class="controlPanel" *ngIf="selected.date.toDateString() != 'Invalid Date'">
 
-  <div class="controlPanel">
-  <div *ngIf="!getStatusOfSelected()">
     <h1>dia {{selected.date.getDate()}} de {{monthNames[selected.date.getMonth()]}}</h1>
+  <div *ngIf="selected.worked  && editing == false">
+    
     <p><span>{{selected.amount}} a receber</span></p>
     <p><span>{{selected.note}}</span></p>
-    <button>edit</button>
+    <button (click)="editing = true">edit</button>
+    <button (click)="deleteSelectDay()">delete</button>
   </div>
-    <div *ngIf="getStatusOfSelected()"> 
-      <h1>dia {{selected.date.getDate()}} de {{monthNames[selected.date.getMonth()]}}</h1>
-     <form>
-      <p>trabalhado?</p>
-      <input type="checkbox">
-      <div><p>quanto a receber?</p>
-      <input type="number">
-      </div>
-      <p>Alguma nota?</p>
-      <input type="text">
-      <button type="submit">salvar</button>
+    <div *ngIf="!selected.worked && editing == false"> 
+     <form [formGroup]="applyForm" (submit)="submitDay()">
+
+      <label for="amount">quanto a receber?</label>
+      <input id="amount" type="number" formControlName="amount">
+      <br>
+     
+      <label for="note">Alguma nota?</label>
+      <input id="note" type="text" formControlName="note">
+
+      <button  type="submit" class="primary">salvar</button>
     </form>
       </div>
-
+      <div *ngIf="editing"> 
+        <form [formGroup]="applyForm" (submit)="updateDay(); editing = false ">
+        
+         <label for="amount">quanto a receber?</label>
+         <input id="amount" type="number" formControlName="amount">
+          <br>
+        
+         <label for="note">Alguma nota?</label>
+         <input id="note" type="text" formControlName="note">
+          
+         <button  type="submit" class="primary">salvar</button>
+       </form>
+         </div>
   </div>
 
 
+</div>
 </div>
 </div>

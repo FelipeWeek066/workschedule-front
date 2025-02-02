@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { day } from './calendar/day';
-
+import { CommonModule, formatDate } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,18 +19,30 @@ export class DataServiceService {
     })
   };
 
-
-  getMonthDays(date: Date): Observable<day[]>{
+  // return every day of a month
+  getMonthDays(date: Date): Observable<day[]>{ 
     let month = "0" + 0;
     if(date.getMonth() < 9){
        month = "0" +(date.getMonth()+1);
     }else{
       month = ""+(date.getMonth()+1);
     }
-    return this.httpClient.get<day[]>(this.apiUrl + "/days?start=" + date.getFullYear() + "-" + month +
-     "-01&end=" + date.getFullYear() + "-" +month + "-" + new Date(date.getFullYear(), date.getMonth()+1, 0).getDate());
+    return this.httpClient.get<day[]>(this.apiUrl + "/days?start=" + formatDate(date, "yyyy-MM-", "en-US") + "01&end=" //first day of month
+     + formatDate(date, "yyyy-MM-", "en-US")  + new Date(date.getFullYear(), date.getMonth()+1, 0).getDate()); //last day of the month
     
    }
 
+   postDay(day: any): Observable<day>{
+    
+    return this.httpClient.post<day>(this.apiUrl+"/days", day); 
+   }
+
+   deleteDay(day: Date){
+    return this.httpClient.delete<any>(this.apiUrl+"/days/"+formatDate(day, "yyyy-MM-dd", "en-US"));
+   }
+
+   updateDay(day: any): Observable<any>{
+      return this.httpClient.put<any>(this.apiUrl+"/days/" + formatDate(day.date, "yyyy-MM-dd", "en-US"), day);
+   }
 
 }

@@ -1,7 +1,6 @@
 export interface day {
     date: Date;
     worked?: boolean;
-    amount?: number;
+    amount: number;
     note?: string;
-    color?: string;
 }
