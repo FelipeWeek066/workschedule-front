@@ -1,0 +1,59 @@
+<div class="general">
+  <div class="row">
+<div class="calendar">
+  <div class="month">
+    <button (click)="lowerMonth()" class="nav">
+    <
+  </button>
+    <div class="upperView">
+      <span class="monthDate">{{month}} {{year}}</span>
+    </div>
+    <button (click)="upperMonth()" class="nav">
+      >
+      </button>
+  </div>
+  <div class="days">
+    <span>D</span>
+    <span>S</span>
+    <span>T</span>
+    <span>Q</span>
+    <span>Q</span>
+    <span>S</span>
+    <span>S</span>
+  </div>
+    <div class="dates" >
+      <button class="DayOn" *ngFor="let day of days; let i = index" [ngStyle]="{'background-color': day.color}" (click)="setFocus(i)">
+      <span>{{day.date.getDate()}}</span>
+    </button>
+    </div>
+</div>
+</div>
+<div class="row">
+
+
+  <div class="controlPanel">
+  <div *ngIf="!getStatusOfSelected()">
+    <h1>dia {{selected.date.getDate()}} de {{monthNames[selected.date.getMonth()]}}</h1>
+    <p><span>{{selected.amount}} a receber</span></p>
+    <p><span>{{selected.note}}</span></p>
+    <button>edit</button>
+  </div>
+    <div *ngIf="getStatusOfSelected()"> 
+      <h1>dia {{selected.date.getDate()}} de {{monthNames[selected.date.getMonth()]}}</h1>
+     <form>
+      <p>trabalhado?</p>
+      <input type="checkbox">
+      <div><p>quanto a receber?</p>
+      <input type="number">
+      </div>
+      <p>Alguma nota?</p>
+      <input type="text">
+      <button type="submit">salvar</button>
+    </form>
+      </div>
+
+  </div>
+
+
+</div>
+</div>
