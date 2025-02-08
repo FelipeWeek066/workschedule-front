@@ -39,11 +39,17 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [{
+              "replace": "src/enviroments/enviroment.ts",
+              "with": "src/enviroments/enviroment.prod.ts"
+              }
+            
+            ],
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",

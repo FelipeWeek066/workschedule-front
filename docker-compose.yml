@@ -1,0 +1,15 @@
+services:
+   workschedule:
+    container_name: workschedule-front
+    build: .
+    image: workschedule-front:latest
+    ports:
+      - 80:80
+    expose: 
+      - 80
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge

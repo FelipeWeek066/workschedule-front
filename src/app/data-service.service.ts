@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { day } from './calendar/day';
 import { CommonModule, formatDate } from '@angular/common';
+import { enviroment } from '../enviroments/enviroment';
 @Injectable({
   providedIn: 'root'
 })
 
 
 export class DataServiceService {
-  private apiUrl = "http://localhost:8080";
+  private apiUrl = enviroment.API_BASE_URL;
   constructor(private httpClient: HttpClient) { }
   date = new Date();
   httpOptions = {
